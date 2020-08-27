@@ -60,11 +60,11 @@ REQUEST_PRIORITIES = keyboard_maker(3, ['Обычный', 'Повышенный 
 
 class CryptoMenu:
     MENU_BUTTONS = {
-                    'btc': 'BitCoin (BTC)',
-                    'ltc': 'LitCoin (LTC)',
-                    'exmo': 'EXMOCoin (EXM)',
+                    'btc': 'Bitcoin(BTC)',
+                    'ltc': 'LiteCoin(LTC)',
+                    'exmo': 'Exmo RUB',
                     'eth': 'Ethereum (ETH)',
-                    'bch': 'BitCoinCash (BCH)',
+                    'bch': 'Bitcoin Cash(BCH)',
                     'back': 'Главное меню'
                     }
 
@@ -88,27 +88,46 @@ class CryptoMenu:
         return False
 
 
+class PersonalMenu:
+    MENU_BUTTONS = {
+        'replenish': 'Пополнить баланс бота',
+        'blnc': 'Показать баланс',
+        'back': 'Главное меню'
+    }
+
+    def get_menu_markup(self):
+        markup = types.ReplyKeyboardMarkup()
+        replenish_btn = types.KeyboardButton(self.MENU_BUTTONS['replenish'])
+        blnc_btn = types.KeyboardButton(self.MENU_BUTTONS['blnc'])
+        back_btn = types.KeyboardButton(self.MENU_BUTTONS['back'])
+        markup.row(replenish_btn, blnc_btn)
+        markup.row(back_btn)
+        return markup
+
+    def sent_by_menu(self, text):
+        if text in self.MENU_BUTTONS.values():
+            return True
+        return False
+
+
 class UserMenu:
-    MENU_BUTTONS = {'trade': 'Получить криптовалюту',
-                    'replenish': 'Пополнить баланс бота',
-                    'blnc': 'Показать баланс',
+    MENU_BUTTONS = {'trade': 'Купить криптовалюту',
+                    'personal_menu': 'Личный кабинет',
                     'help': 'Помощь 🆘',
                     'prt': 'Партнёрка 👥'
                     }
-    URLS = {'group': 'https://t.me/cripto_te',
-            'channel': 'https://t.me/cripto_tes'}
+    URLS = {'group': 'https://t.me/joinchat/JihjtQ9PzjsJBH2Uw2NxFg',
+            'channel': 'https://t.me/joinchat/AAAAAFca8-DX0MYpg3nfNA'}
 
     def get_start_menu_markup(self):
         markup = types.ReplyKeyboardMarkup()
         trade_btn = types.KeyboardButton(self.MENU_BUTTONS['trade'])
-        replenish_btn = types.KeyboardButton(self.MENU_BUTTONS['replenish'])
-        blnc_btn =types.KeyboardButton(self.MENU_BUTTONS['blnc'])
         help_btn = types.KeyboardButton(self.MENU_BUTTONS['help'])
+        personal_menu_btn = types.KeyboardButton(self.MENU_BUTTONS['personal_menu'])
         partnership_btn = types.KeyboardButton(self.MENU_BUTTONS['prt'])
 
-        markup.row(trade_btn, replenish_btn)
-        markup.row(help_btn, partnership_btn)
-        markup.row(blnc_btn)
+        markup.row(trade_btn,help_btn)
+        markup.row(partnership_btn, personal_menu_btn)
         return markup
 
     def suggestion_menu(self):

@@ -11,7 +11,9 @@ u_menu = UserMenu()
 o_menu = OperatorMenu()
 a_menu = AdminMenu()
 c_menu = CryptoMenu()
+p_menu = PersonalMenu()
 curr = CurrencyBot()
+
 global OPERATORS, ADMINS
 OPERATORS = get_operators_list()
 ADMINS = get_admins_list()
@@ -173,7 +175,7 @@ def msg_analyzer(msg):
 
     if u_menu.sent_by_start_menu(msg.text):
         # User menu
-        if 'Получить криптовалюту' in msg.text:
+        if 'Купить криптовалюту' in msg.text:
             markup = c_menu.get_menu_markup()
             bot.send_message(user_id, text="⬇️ Выберите криптовалюту", reply_markup=markup)
 
@@ -194,6 +196,11 @@ def msg_analyzer(msg):
                                  text="Задайте ваш вопрос прямо в чат с ботом, мы ответим как-только сможем!", )
                 print(request)
 
+        if 'Личный кабинет' in msg.text:
+            bot.send_message(user_id, text='Личный кабинет', reply_markup=p_menu.get_menu_markup())
+            return True
+
+    elif p_menu.sent_by_menu(msg.text):
         if "Пополнить баланс" in msg.text:
             select_all_requests(c)
             bot.send_message(user_id,
@@ -203,6 +210,10 @@ def msg_analyzer(msg):
         if 'Показать баланс' in msg.text:
             bot.send_message(user_id, text=f"Вы {user[3]} пользователь!\nНа данный момент ваш баланс: {user[2]} руб.\n",
                              reply_markup=RETURN_MONEY)
+
+        if 'Главное меню' in msg.text:
+            markup = u_menu.get_start_menu_markup()
+            bot.send_message(user_id, text="⬇️ Меню", reply_markup=markup)
 
     elif c_menu.sent_by_menu(msg.text):
         # Get Crypto menu
@@ -450,7 +461,8 @@ def buttons_stuff(call):
     print(service_request, 'found (buttons_stuff) service')
     print(return_request, 'found (buttons_stuff) return')
     print(call.data)
-    if (str(user_id) in OPERATORS or str(user_id) in ADMINS):
+
+    if str(user_id) in OPERATORS or str(user_id) in ADMINS:
         if 'send_msg' in call.data:
             call_data, client_id, message = call.data.split(':')
             bot.send_message(client_id,

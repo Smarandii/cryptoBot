@@ -2,7 +2,7 @@ TOKEN = '1310564069:AAGMWXVnClYdXInbQJ22VDgP3JaF39-kUJE'
 ADMINS_LIST = 'admins.txt'
 OPERATORS_LIST = 'operators.txt'
 GROUP = "-498679897"
-CHANNEL = "-1001161612544"
+CHANNEL = "-1001461384160"
 PERCENTS = {'under_5k_f': {'BitCoin': 0.12,
                            'LitCoin': 0.10,
                            'Etherium': 0.11,
