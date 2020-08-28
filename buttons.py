@@ -54,7 +54,7 @@ PAYMENT_METHODS.add(CANCEL)
 REPLENISH_METHODS = keyboard_maker(4, ['Сбербанк', 'Яндекс.Деньги', 'AdvCash', '🚫 Отменить заявку'],
                                  ['pay_sber', 'pay_yandex', 'pay_advcash', 'cancel'])
 
-REQUEST_PRIORITIES = keyboard_maker(3, ['Обычный', 'Повышенный (+80р.)', "Максимальный (+230р.)"],
+REQUEST_PRIORITIES = keyboard_maker(3, ['Обычная', 'Повышенная (+80р.)', "Максимальная (+230р.)"],
                                     ['priority_usl', 'priority_adv', 'priority_max'])
 
 
@@ -62,8 +62,8 @@ class CryptoMenu:
     MENU_BUTTONS = {
                     'btc': 'Bitcoin(BTC)',
                     'ltc': 'LiteCoin(LTC)',
-                    'exmo': 'Exmo RUB',
-                    'eth': 'Ethereum (ETH)',
+                    'exmo': 'ExmoRUB',
+                    'eth': 'Ethereum(ETH)',
                     'bch': 'Bitcoin Cash(BCH)',
                     'back': 'Главное меню'
                     }

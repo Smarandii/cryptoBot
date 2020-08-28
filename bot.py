@@ -159,6 +159,14 @@ def start_menu(msg):
         bot.send_message(user_id, "⬇️Меню", reply_markup=markup)
 
 
+def get_key_and_curr_price(request):
+    if 'Bitcoin Cash' not in request[3]:
+        operation_type, key, curr_price = request[3].split(" ")
+    else:
+        operation_type, key, _,  curr_price = request[3].split(" ")
+    return key, curr_price
+
+
 @bot.message_handler(content_types=['text'])
 def msg_analyzer(msg):
     c = sqlite3.connect('database.db')
@@ -217,9 +225,9 @@ def msg_analyzer(msg):
 
     elif c_menu.sent_by_menu(msg.text):
         # Get Crypto menu
-        if "(" in msg.text:
+        if "Bitcoin(BTC)" in msg.text:
             # If crypto chosen
-            key, iso_code = msg.text.split(" ")
+            key = "Bitcoin"
             curr.update_all_currencies()
             curr_price = curr.get_curr_by_key(key)
 
@@ -228,6 +236,87 @@ def msg_analyzer(msg):
                                  text='У вас уже есть заявка, желаете её отменить?',
                                  reply_markup=SHOW_OR_CANCEL_TRADE_ORDER)
             else:
+                # TODO ввод в рублях или в выбранной валюте
+                bot.send_message(chat_id=user_id,
+                                 text=f'💰Введи нужную сумму в {key}\n'
+                                      f'Например: {EXAMPLE[key]}',
+                                 reply_markup=CANCEL_ORDER)
+                request = add_request_to_db(c, [user_id, "T: wait for trade value",
+                                                f'trade {key} {curr_price}', str(datetime.now()), 'None', 'None'])
+                print(request, 'added')
+
+        if "LiteCoin(LTC)" in msg.text:
+            # If crypto chosen
+            key = "LiteCoin"
+            curr.update_all_currencies()
+            curr_price = curr.get_curr_by_key(key)
+
+            if trade_request is not None and trade_request[2] != 'user_confirmed':
+                bot.send_message(chat_id=user_id,
+                                 text='У вас уже есть заявка, желаете её отменить?',
+                                 reply_markup=SHOW_OR_CANCEL_TRADE_ORDER)
+            else:
+                # TODO ввод в рублях или в выбранной валюте
+                bot.send_message(chat_id=user_id,
+                                 text=f'💰Введи нужную сумму в {key}\n'
+                                      f'Например: {EXAMPLE[key]}',
+                                 reply_markup=CANCEL_ORDER)
+                request = add_request_to_db(c, [user_id, "T: wait for trade value",
+                                                f'trade {key} {curr_price}', str(datetime.now()), 'None', 'None'])
+                print(request, 'added')
+
+        if "ExmoRUB" in msg.text:
+            # If crypto chosen
+            key = "ExmoRUB"
+            curr.update_all_currencies()
+            curr_price = curr.get_curr_by_key(key)
+
+            if trade_request is not None and trade_request[2] != 'user_confirmed':
+                bot.send_message(chat_id=user_id,
+                                 text='У вас уже есть заявка, желаете её отменить?',
+                                 reply_markup=SHOW_OR_CANCEL_TRADE_ORDER)
+            else:
+                # TODO ввод в рублях или в выбранной валюте
+                bot.send_message(chat_id=user_id,
+                                 text=f'💰Введи нужную сумму в {key}\n'
+                                      f'Например: {EXAMPLE[key]}',
+                                 reply_markup=CANCEL_ORDER)
+                request = add_request_to_db(c, [user_id, "T: wait for trade value",
+                                                f'trade {key} {curr_price}', str(datetime.now()), 'None', 'None'])
+                print(request, 'added')
+
+        if "Ethereum(ETH)" in msg.text:
+            # If crypto chosen
+            key = "Ethereum"
+            curr.update_all_currencies()
+            curr_price = curr.get_curr_by_key(key)
+
+            if trade_request is not None and trade_request[2] != 'user_confirmed':
+                bot.send_message(chat_id=user_id,
+                                 text='У вас уже есть заявка, желаете её отменить?',
+                                 reply_markup=SHOW_OR_CANCEL_TRADE_ORDER)
+            else:
+                # TODO ввод в рублях или в выбранной валюте
+                bot.send_message(chat_id=user_id,
+                                 text=f'💰Введи нужную сумму в {key}\n'
+                                      f'Например: {EXAMPLE[key]}',
+                                 reply_markup=CANCEL_ORDER)
+                request = add_request_to_db(c, [user_id, "T: wait for trade value",
+                                                f'trade {key} {curr_price}', str(datetime.now()), 'None', 'None'])
+                print(request, 'added')
+
+        if "Bitcoin Cash(BCH)" in msg.text:
+            # If crypto chosen
+            key = "Bitcoin Cash"
+            curr.update_all_currencies()
+            curr_price = curr.get_curr_by_key(key)
+
+            if trade_request is not None and trade_request[2] != 'user_confirmed':
+                bot.send_message(chat_id=user_id,
+                                 text='У вас уже есть заявка, желаете её отменить?',
+                                 reply_markup=SHOW_OR_CANCEL_TRADE_ORDER)
+            else:
+                # TODO ввод в рублях или в выбранной валюте
                 bot.send_message(chat_id=user_id,
                                  text=f'💰Введи нужную сумму в {key}\n'
                                       f'Например: {EXAMPLE[key]}',
@@ -398,18 +487,14 @@ def msg_analyzer(msg):
             request = trade_request
             if request[2] == "T: wait for trade value":
                 trade_value = get_value(msg.text)
-                operation_type, key, curr_price = request[3].split(" ")
+                key, curr_price = get_key_and_curr_price(request)
                 if trade_value_is_acceptable(trade_value, key):
                     user_price, user_curr, promotion = get_user_price(curr_price, user, trade_value, key)
                     if promotion is not None:
                         bot.send_message(user_id, text=f'Это ваша {user[6] + 1} заявка, она будет беспроцентной!')
 
-                    bot.send_message(user_id,
-                                     text=f"Покупка {trade_value} {key}\n"
-                                          f"по курсу: {user_curr} руб.\n"
-                                          f"К оплате: {user_price} руб.\n"
-                                          f"Следующим сообщением отправьте нам ваш криптокошелёк.",
-                                     reply_markup=CANCEL_ORDER)
+                    message = get_prepayment_message(user_curr, trade_value, user_price, key)
+                    bot.send_message(user_id, text=message, reply_markup=CANCEL_ORDER)
                     request[2] = 'T: waiting_for_usr_wallet'
                     request[5] = f"Покупка {trade_value} {key}, К оплате: {user_price}"
                     request[3] = f'trade {trade_value} {key} {user_curr}'
@@ -428,7 +513,7 @@ def msg_analyzer(msg):
                                      text=f'🙅‍♂️ Такого кошелька не существует! Попробуйте ещё раз.')
             elif request[2] == "T: waiting_for_priority":
                 bot.send_message(user_id,
-                                 text='Выберите приоритет вашей заявки!',
+                                 text='Выберите желаемую коммиссию сети!',
                                  reply_markup=REQUEST_PRIORITIES)
             elif request[2] == "T: waiting_for_purchase":
                 bot.send_message(user_id,
@@ -782,9 +867,9 @@ def buttons_stuff(call):
     elif 'priority_usl' == call.data:
         request = trade_request
         request[2] = "T: waiting_for_purchase"
-        request[5] = request[5] + ' Приоритет обычный'
-        bot.edit_message_text(text='Приоритет установлен! Ваша заявка будет обработана как только '
-                                   'бот освободится от обработки заявок с более высоким приоритетом.\n'
+        request[5] = request[5] + ' Обычная комиссия'
+        bot.edit_message_text(text='Комиссия установлена! Ваша заявка будет обработана как только '
+                                   'бот освободится от обработки заявок с более высокими комиссиями.\n'
                                    'Выберите способ оплаты!',
                               chat_id=user_id,
                               message_id=call.message.message_id,
@@ -793,8 +878,8 @@ def buttons_stuff(call):
         request = trade_request
         request[2] = "T: waiting_for_purchase"
         request[5] = change_request_comment_price(request, ADV_PRIORITY_PRICE)
-        bot.edit_message_text(text='Приоритет установлен! Ваша заявка будет обработана как только '
-                                   'бот освободится от обработки заявок с максимальным приоритетом.\n'
+        bot.edit_message_text(text='Комиссия установлена! Ваша заявка будет обработана как только '
+                                   'бот освободится от обработки заявок с максимальными комиссиями.\n'
                                    'Выберите способ оплаты!',
                               chat_id=user_id,
                               message_id=call.message.message_id,
@@ -803,7 +888,7 @@ def buttons_stuff(call):
         request = trade_request
         request[2] = "T: waiting_for_purchase"
         request[5] = change_request_comment_price(request, MAX_PRIORITY_PRICE)
-        bot.edit_message_text(text='Приоритет установлен! Ваша заявка будет обработана в самое ближайшее время.\n'
+        bot.edit_message_text(text='Комиссия установлена! Ваша заявка будет обработана в самое ближайшее время.\n'
                                    'Выберите способ оплаты!',
                               chat_id=user_id,
                               message_id=call.message.message_id,
@@ -817,7 +902,7 @@ def buttons_stuff(call):
     elif call.data == 'wallet_correct':
         request = trade_request
         request[2] = "T: waiting for priority"
-        bot.edit_message_text(text='Выберите приоритет заявки!', chat_id=user_id, message_id=call.message.message_id)
+        bot.edit_message_text(text='Выберите желаемую комиссию сети!', chat_id=user_id, message_id=call.message.message_id)
         bot.edit_message_reply_markup(user_id, message_id=call.message.message_id, reply_markup=REQUEST_PRIORITIES)
 
     elif call.data == 'replenish_confirmed':
@@ -889,27 +974,27 @@ def buttons_stuff(call):
     elif call.data == 'pay_sber':
         request = trade_request
         request[3] = request[3] + " " + call.data
+        trade_information = get_trade_information(request)
         bot.edit_message_text(text=f'Реквизиты для оплаты: {SBER_REQUISITES}\n'
-                                   f'В описании платежа укажите {user_id}\n'
-                                   f'{request[5]}',
+                                   f'{trade_information}',
                               reply_markup=PURCHASE_CONFIRM_KEYBOARD,
                               chat_id=user_id,
                               message_id=call.message.message_id)
     elif call.data == 'pay_yandex':
         request = trade_request
         request[3] = request[3] + " " + call.data
+        trade_information = get_trade_information(request)
         bot.edit_message_text(text=f'Реквизиты для оплаты: {YANDEX_REQUISITES}\n'
-                                   f'В описании платежа укажите {user_id}\n'
-                                   f'{request[5]}',
+                                   f'{trade_information}',
                               reply_markup=PURCHASE_CONFIRM_KEYBOARD,
                               chat_id=user_id,
                               message_id=call.message.message_id)
     elif call.data == 'pay_advcash':
         request = trade_request
         request[3] = request[3] + " " + call.data
+        trade_information = get_trade_information(request)
         bot.edit_message_text(text=f'Реквизиты для оплаты: {ADVCASH_REQUISITES}\n'
-                                   f'В описании платежа укажите {user_id}\n'
-                                   f'{request[5]}',
+                                   f'{trade_information}',
                               reply_markup=PURCHASE_CONFIRM_KEYBOARD,
                               chat_id=user_id,
                               message_id=call.message.message_id)

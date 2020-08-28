@@ -1,7 +1,36 @@
 import coinaddr
 
 from database import get_requests
-from secrets import PERCENTS, DISCOUNTS, OPERATORS_LIST, ADMINS_LIST, MIN_VALUE_FOR_RETURN, MAX_VALUE_FOR_RETURN
+from secrets import PERCENTS, DISCOUNTS, OPERATORS_LIST, ADMINS_LIST, MIN_VALUE_FOR_RETURN, MAX_VALUE_FOR_RETURN, \
+    ADV_PRIORITY_PRICE, MAX_PRIORITY_PRICE
+
+
+def get_prepayment_message(user_curr, trade_value, user_price, key) -> str:
+    messages = {'Bitcoin': f"Курс: {user_curr} руб.\n"
+                                          f"Покупка {trade_value} {key}\n"
+                                          f"К оплате: {user_price} руб.\n"
+                                          f"Следующим сообщением отправьте нам ваш криптокошелёк.\n"
+                                          f"Пример: 3GncF7muEw1oayeuH33rxahdmtHSWoj4tw",
+                'LiteCoin': f"Курс: {user_curr} руб.\n"
+                                          f"Покупка {trade_value} {key}\n"
+                                          f"К оплате: {user_price} руб.\n"
+                                          f"Следующим сообщением отправьте нам ваш криптокошелёк.\n"
+                                          f"Пример: MDwCMAofN9K4U8e9EPMzs57Asams2AFBen",
+                'ExmoRUB': f"Курс: {user_curr} руб.\n"
+                                          f"Покупка {trade_value} {key}\n"
+                                          f"К оплате: {user_price} руб.\n",
+                'Ethereum': f"Курс: {user_curr} руб.\n"
+                                          f"Покупка {trade_value} {key}\n"
+                                          f"К оплате: {user_price} руб.\n"
+                                          f"Следующим сообщением отправьте нам ваш криптокошелёк.\n"
+                                          f"Пример: 0x2Fe62eae2fB629808C94E55AF69fB373FD959980",
+                'Bitcoin Cash': f"Курс: {user_curr} руб.\n"
+                                          f"Покупка {trade_value} {key}\n"
+                                          f"К оплате: {user_price} руб.\n"
+                                          f"Следующим сообщением отправьте нам ваш криптокошелёк.\n"
+                                          f"Пример: 3GncF7muEw1oayeuH33rxahdmtHSWoj4tw",
+                }
+    return messages[key]
 
 
 def get_price_from_request(request):
@@ -12,7 +41,10 @@ def get_price_from_request(request):
 def change_request_comment_price(request, amount: float):
     price = get_price_from_request(request)
     price = round(price + amount, 2)
-    request[5] = request[5].split(': ')[0] + f': {price} Приоритет повышенный'
+    if amount == ADV_PRIORITY_PRICE:
+        request[5] = request[5].split(': ')[0] + f': {price} Комиссия повышенная'
+    if amount == MAX_PRIORITY_PRICE:
+        request[5] = request[5].split(': ')[0] + f': {price} Комиссия максимальная'
     return request[5]
 
 
@@ -221,6 +253,12 @@ def get_user_price(curr, user, trade_value, key):
     return round(user_price, 2) - user_price * discount, user_curr, promotion
 
 
+def get_trade_information(request) -> str:
+    trade_information = request[5].split(', ')[0]
+    trade_information += '\n' + request[5].split(',')[1]
+    return trade_information
+
+
 def get_fee(request):
     fee = request[5].split(": ")[1]
     return round(float(fee) * 0.003, 2)
@@ -246,13 +284,13 @@ def get_value(trade_value):
 
 
 def trade_value_is_acceptable(trade_value, key):
-    if key == "EXMOCoin":
+    if key == "ExmoRUB":
         return 5 < trade_value <= 100000
-    if key == 'BitCoin':
+    if key == 'Bitcoin':
         return 0 < trade_value <= 0.02
-    if key == 'LitCoin':
+    if key == 'Ethereum':
         return 0 < trade_value <= 0.02
-    if key == 'BitCoinCash':
+    if key == 'Bitcoin Cash':
         return 0 < trade_value <= 0.02
     if key == 'Ethereum':
         return 0 < trade_value <= 0.02

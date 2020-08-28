@@ -60,15 +60,15 @@ class CurrencyBot:
     def get_curr_by_key(self, key):
 
         price = 'NaN'
-        if key == 'BitCoin':
+        if key == 'Bitcoin':
             price = self.btc_currency
-        if key == 'LitCoin':
+        if key == 'LiteCoin':
             price = self.ltc_currency
-        if key == 'BitCoinCash':
+        if key == 'Bitcoin Cash':
             price = self.bch_currency
-        if key == 'Etherium':
+        if key == 'Ethereum':
             price = self.eth_currency
-        if key == 'EXMOCoin':
+        if key == 'ExmoRUB':
             price = self.exmo_currency
 
         return price

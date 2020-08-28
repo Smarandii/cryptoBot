@@ -221,7 +221,7 @@ def check_requests_shell_life(conn):
 
 
 def add_new_user_to_db(conn, user_id, follow_status, invited_by):
-    user = [user_id, 10000, 'Серебрянный', follow_status, invited_by, 0, 0]
+    user = [user_id, 0, 'Серебрянный', follow_status, invited_by, 0, 0]
     with conn:
         cursor = conn.cursor()
         cursor.execute("SELECT telegram_id FROM users")

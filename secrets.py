@@ -3,61 +3,61 @@ ADMINS_LIST = 'admins.txt'
 OPERATORS_LIST = 'operators.txt'
 GROUP = "-498679897"
 CHANNEL = "-1001461384160"
-PERCENTS = {'under_5k_f': {'BitCoin': 0.12,
-                           'LitCoin': 0.10,
-                           'Etherium': 0.11,
-                           'BitCoinCash': 0.11,
-                           'EXMOCoin': 0.10
+PERCENTS = {'under_5k_f': {'Bitcoin': 0.12,
+                           'LiteCoin': 0.10,
+                           'Ethereum': 0.11,
+                           'Bitcoin Cash': 0.11,
+                           'ExmoRUB': 0.10
                            },
-            'from_5k_to_10k_f': {'BitCoin': 0.11,
-                                 'LitCoin': 0.09,
-                                 'Etherium': 0.11,
-                                 'BitCoinCash': 0.11,
-                                 'EXMOCoin': 0.09
+            'from_5k_to_10k_f': {'Bitcoin': 0.11,
+                                 'LiteCoin': 0.09,
+                                 'Ethereum': 0.11,
+                                 'Bitcoin Cash': 0.11,
+                                 'ExmoRUB': 0.09
                                  },
-            'above_10k_f': {'BitCoin': 0.10,
-                            'LitCoin': 0.08,
-                            'Etherium': 0.10,
-                            'BitCoinCash': 0.10,
-                            'EXMOCoin': 0.085
+            'above_10k_f': {'Bitcoin': 0.10,
+                            'LiteCoin': 0.08,
+                            'Ethereum': 0.10,
+                            'Bitcoin Cash': 0.10,
+                            'ExmoRUB': 0.085
                             },
             'under_2k': {
-                        'BitCoin': 0.13,
-                        'LitCoin': 0.11,
-                        'Etherium': 0.12,
-                        'BitCoinCash': 0.12,
-                        'EXMOCoin': 0.10
+                        'Bitcoin': 0.13,
+                        'LiteCoin': 0.11,
+                        'Ethereum': 0.12,
+                        'Bitcoin Cash': 0.12,
+                        'ExmoRUB': 0.10
                          },
             'from_2k_to_5k': {
-                        'BitCoin': 0.12,
-                        'LitCoin': 0.11,
-                        'Etherium': 0.11,
-                        'BitCoinCash': 0.12,
-                        'EXMOCoin': 0.10
+                        'Bitcoin': 0.12,
+                        'LiteCoin': 0.11,
+                        'Ethereum': 0.11,
+                        'Bitcoin Cash': 0.12,
+                        'ExmoRUB': 0.10
                              },
             'from_5k_to_10k': {
-                        'BitCoin': 0.115,
-                        'LitCoin': 0.105,
-                        'Etherium': 0.105,
-                        'BitCoinCash': 0.115,
-                        'EXMOCoin': 0.095
+                        'Bitcoin': 0.115,
+                        'LiteCoin': 0.105,
+                        'Ethereum': 0.105,
+                        'Bitcoin Cash': 0.115,
+                        'ExmoRUB': 0.095
                              },
             'above_10k': {
-                'BitCoin': 0.11,
-                'LitCoin': 0.10,
-                'Etherium': 0.10,
-                'BitCoinCash': 0.11,
-                'EXMOCoin': 0.09
+                'Bitcoin': 0.11,
+                'LiteCoin': 0.10,
+                'Ethereum': 0.10,
+                'Bitcoin Cash': 0.11,
+                'ExmoRUB': 0.09
                          },
             }
 DISCOUNTS = {'Серебрянный': 0,
              'Золотой': 0.005,
              'Платиновый': 0.01}
-EXAMPLE = {'EXMOCoin': '1000',
-           'BitCoin': '0.001456',
+EXAMPLE = {'ExmoRUB': '1000',
+           'Bitcoin': '0.001456',
            'Ethereum': '0.001432',
-           'BitCoinCash': '0.001687',
-           'LitCoin': '0.00987'}
+           'Bitcoin Cash': '0.001687',
+           'LiteCoin': '0.00987'}
 BOT_TAG = "crypto_bot_bot_bot"
 SBER_REQUISITES = "sbersbersbersbersbersber"
 YANDEX_REQUISITES = "yayayayayayayayayayaya"
